@@ -19,11 +19,22 @@ def get_transforms(train=True):
         ])
 
 class LucchiDataset(Dataset):
-    def __init__(self, root: Path, txt_list: Path, transforms=None):
+    # def __init__(self, root: Path, txt_list: Path, transforms=None):
+    #     self.root = Path(root)
+    #     self.img_dir = self.root / "images"
+    #     self.mask_dir = self.root / "masks"
+    #     self.ids = [line.strip() for line in open(txt_list)]
+    #     self.transforms = transforms
+
+    def __init__(self, root: Path, txt_list: Path | None, transforms=None):
         self.root = Path(root)
         self.img_dir = self.root / "images"
         self.mask_dir = self.root / "masks"
-        self.ids = [line.strip() for line in open(txt_list)]
+        if txt_list is None:
+            # 自动按文件名排序加载全部 PNG
+            self.ids = sorted(p.name for p in self.img_dir.glob("*.png"))
+        else:
+            self.ids = [line.strip() for line in open(txt_list)]
         self.transforms = transforms
 
     def __len__(self):

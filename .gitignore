@@ -1,3 +1,4 @@
 # 忽略虚拟环境和数据
 .venv/
 data/
+outputs/
